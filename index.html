@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Akij Resources Ltd - Document Verification Portal</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #5f6b85;
+      --border: #d9e1ee;
+      --primary: #0f3d91;
+      --primary-2: #184fb9;
+      --success-bg: #e9f8ef;
+      --success-text: #1f7a3e;
+      --danger-bg: #fdecec;
+      --danger-text: #a12626;
+      --warn-bg: #fff6e5;
+      --warn-text: #9a6500;
+      --shadow: 0 10px 30px rgba(14, 31, 53, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .topbar {
+      background: var(--primary);
+      color: white;
+      padding: 14px 20px;
+      font-size: 14px;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      border-radius: 18px;
+      padding: 34px 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      color: rgba(255,255,255,0.92);
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 720px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 560px) {
+      .form-row {
+        flex-direction: column;
+      }
+    }
+
+    input[type="text"] {
+      flex: 1;
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+    }
+
+    button {
+      border: none;
+      background: var(--primary);
+      color: white;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      min-width: 140px;
+    }
+
+    button:hover {
+      background: var(--primary-2);
+    }
+
+    .result {
+      margin-top: 22px;
+      display: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .valid {
+      background: var(--success-bg);
+      color: var(--success-text);
+    }
+
+    .revoked {
+      background: var(--danger-bg);
+      color: var(--danger-text);
+    }
+
+    .expired {
+      background: var(--warn-bg);
+      color: var(--warn-text);
+    }
+
+    .notfound {
+      background: #eef2f7;
+      color: #44506a;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    .info-table th,
+    .info-table td {
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 8px;
+      vertical-align: top;
+    }
+
+    .info-table th {
+      width: 210px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      background: #f8fbff;
+      border: 1px solid #dce9ff;
+      border-radius: 12px;
+      color: #284b7d;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .company-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .footer {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .mono {
+      font-family: Consolas, Monaco, monospace;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    Official Verification Service | Akij Resources Ltd
+  </div>
+
+  <div class="wrap">
+    <section class="hero">
+      <h1>Document Verification Portal</h1>
+      <p>
+        This portal is provided by Akij Resources Ltd for third-party verification of issued documents.
+        Enter a verification ID below, or access this page using the QR code printed on the document.
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Verify a Document</h2>
+        <p class="muted">
+          Enter the document verification ID exactly as printed on the document.
+        </p>
+
+        <div class="form-row">
+          <input id="docIdInput" type="text" placeholder="Example: AKJ-EMP-2026-001" />
+          <button id="verifyBtn">Verify</button>
+        </div>
+
+        <div class="small">
+          Tip: QR codes can link directly to this page using
+          <span class="mono">?id=DOCUMENT-ID</span>
+        </div>
+
+        <div id="resultBox" class="result"></div>
+      </section>
+
+      <aside class="card">
+        <h2>Company Information</h2>
+        <ul class="company-list">
+          <li><strong>Company Name:</strong> Akij Resources Ltd</li>
+          <li><strong>Service:</strong> Official Document Verification</li>
+          <li><strong>Domain:</strong> verify.akijresourceltd.com</li>
+          <li><strong>Email:</strong> info@akijresourceltd.com</li>
+        </ul>
+
+        <div class="note">
+          Third parties, including embassies, recruiters, institutions, and agencies,
+          may use this portal to confirm the current verification status of a document
+          issued by Akij Resources Ltd.
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer">
+      © <span id="year"></span> Akij Resources Ltd. All rights reserved.
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // DOCUMENT DATABASE
+    // Add/edit your records here
+    // =========================
+    const documents = [
+      {
+        id: "AKJ-EMP-2026-001",
+        holderName: "Rahim Ahmed",
+        documentType: "Employment Certificate",
+        issueDate: "10 March 2026",
+        expiryDate: "10 March 2027",
+        issuedBy: "Akij Resources Ltd",
+        status: "VALID",
+        remarks: "This document is authentic and currently valid."
+      },
+      {
+        id: "AKJ-SAL-2026-002",
+        holderName: "Karim Uddin",
+        documentType: "Salary Certificate",
+        issueDate: "12 March 2026",
+        expiryDate: "12 September 2026",
+        issuedBy: "Akij Resources Ltd",
+        status: "VALID",
+        remarks: "This document is authentic and currently valid."
+      },
+      {
+        id: "AKJ-NOC-2026-003",
+        holderName: "Nusrat Jahan",
+        documentType: "No Objection Certificate",
+        issueDate: "05 January 2026",
+        expiryDate: "05 July 2026",
+        issuedBy: "Akij Resources Ltd",
+        status: "REVOKED",
+        remarks: "This document has been revoked and should not be accepted."
+      },
+      {
+        id: "AKJ-EMP-2025-004",
+        holderName: "Sabbir Hossain",
+        documentType: "Employment Certificate",
+        issueDate: "08 January 2025",
+        expiryDate: "08 January 2026",
+        issuedBy: "Akij Resources Ltd",
+        status: "EXPIRED",
+        remarks: "This document has expired."
+      }
+    ];
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function getBadgeClass(status) {
+      if (status === "VALID") return "valid";
+      if (status === "REVOKED") return "revoked";
+      if (status === "EXPIRED") return "expired";
+      return "notfound";
+    }
+
+    function renderResult(doc, searchedId) {
+      const resultBox = document.getElementById("resultBox");
+      resultBox.style.display = "block";
+
+      if (!doc) {
+        resultBox.innerHTML = `
+          <div class="badge notfound">NOT FOUND</div>
+          <table class="info-table">
+            <tr><th>Verification ID</th><td>${escapeHtml(searchedId)}</td></tr>
+            <tr><th>Status</th><td>No matching record found</td></tr>
+          </table>
+          <div class="note">
+            The provided verification ID was not found in the current records.
+            Please ensure the ID is entered exactly as printed on the document.
+          </div>
+        `;
+        return;
+      }
+
+      resultBox.innerHTML = `
+        <div class="badge ${getBadgeClass(doc.status)}">${escapeHtml(doc.status)}</div>
+        <table class="info-table">
+          <tr><th>Verification ID</th><td>${escapeHtml(doc.id)}</td></tr>
+          <tr><th>Holder Name</th><td>${escapeHtml(doc.holderName)}</td></tr>
+          <tr><th>Document Type</th><td>${escapeHtml(doc.documentType)}</td></tr>
+          <tr><th>Issue Date</th><td>${escapeHtml(doc.issueDate)}</td></tr>
+          <tr><th>Expiry Date</th><td>${escapeHtml(doc.expiryDate)}</td></tr>
+          <tr><th>Issued By</th><td>${escapeHtml(doc.issuedBy)}</td></tr>
+          <tr><th>Current Status</th><td>${escapeHtml(doc.status)}</td></tr>
+          <tr><th>Remarks</th><td>${escapeHtml(doc.remarks)}</td></tr>
+        </table>
+        <div class="note">
+          This verification result reflects the current status of the document in the
+          Akij Resources Ltd verification records at the time of access.
+        </div>
+      `;
+    }
+
+    function verifyDocument() {
+      const input = document.getElementById("docIdInput");
+      const rawId = input.value.trim();
+      if (!rawId) return;
+
+      const normalized = rawId.toUpperCase();
+      const doc = documents.find(x => x.id.toUpperCase() === normalized);
+      renderResult(doc, normalized);
+
+      const url = new URL(window.location.href);
+      url.searchParams.set("id", normalized);
+      window.history.replaceState({}, "", url.toString());
+    }
+
+    document.getElementById("verifyBtn").addEventListener("click", verifyDocument);
+
+    document.getElementById("docIdInput").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        verifyDocument();
+      }
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const params = new URLSearchParams(window.location.search);
+    const qrId = params.get("id");
+    if (qrId) {
+      document.getElementById("docIdInput").value = qrId;
+      verifyDocument();
+    }
+  </script>
+</body>
+</html>
